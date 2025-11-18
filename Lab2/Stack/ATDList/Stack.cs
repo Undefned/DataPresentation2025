@@ -23,9 +23,6 @@ public class Stack<T> : IStack<T>
 
     public T Pop()
     {
-        if (Empty()) 
-            throw new InvalidOperationException("Stack is empty");
-            
         T item = _list.Retrieve(_list.First());
         _list.Delete(_list.First());
         return item;
@@ -38,9 +35,6 @@ public class Stack<T> : IStack<T>
 
     public T Top()
     {
-        if (Empty())
-            throw new InvalidOperationException("Stack is empty");
-            
         T? item = _list.Retrieve(_list.End());
         return item;
     }

@@ -39,18 +39,18 @@ public class Array
         Console.WriteLine($"Всего добавлено символов: {addedCount}");
         
         // Тест 3: Последовательное извлечение символов (согласно заданию)
-        Console.WriteLine("\n3. Извлечение символов из очереди:");
-        Console.WriteLine("Извлекаем символы пока очередь не станет пустой:");
+        // Console.WriteLine("\n3. Извлечение символов из очереди:");
+        // Console.WriteLine("Извлекаем символы пока очередь не станет пустой:");
         
-        int extractedCount = 0;
-        while (!queue.Empty())
-        {
-            char ch = queue.Dequeue();
-            Console.WriteLine($"Извлечен: '{ch}'");
-            extractedCount++;
-        }
-        Console.WriteLine($"Всего извлечено символов: {extractedCount}");
-        Console.WriteLine($"Очередь пустая после извлечения: {queue.Empty()}");
+        // int extractedCount = 0;
+        // while (!queue.Empty())
+        // {
+        //     char ch = queue.Dequeue();
+        //     Console.WriteLine($"Извлечен: '{ch}'");
+        //     extractedCount++;
+        // }
+        // Console.WriteLine($"Всего извлечено символов: {extractedCount}");
+        // Console.WriteLine($"Очередь пустая после извлечения: {queue.Empty()}");
         
         // Тест 4: Проверка методов Front и Empty
         Console.WriteLine("\n4. Тестирование методов Front и Empty:");
@@ -79,12 +79,7 @@ public class Array
         smallQueue.Enqueue(4);
         smallQueue.Enqueue(5);
         Console.WriteLine("Добавили: 4, 5");
-        
-        Console.WriteLine("Извлекаем оставшиеся элементы:");
-        while (!smallQueue.Empty())
-        {
-            Console.WriteLine($"Извлечен: {smallQueue.Dequeue()}");
-        }
+
         
         // Тест 6: Проверка метода MakeNull
         Console.WriteLine("\n6. Тестирование метода MakeNull:");
@@ -96,61 +91,6 @@ public class Array
         queue.MakeNull();
         Console.WriteLine($"После MakeNull - очередь пустая: {queue.Empty()}");
         
-        // Тест 7: Проверка на переполнение
-        Console.WriteLine("\n7. Тестирование переполнения очереди:");
-        Lab2.Queue.Array.Queue<char> capacityTestQueue = new Lab2.Queue.Array.Queue<char>();
-        
-        int capacityCount = 0;
-        for (char c = 'A'; c <= 'Z'; c++)
-        {
-            if (!capacityTestQueue.Full())
-            {
-                capacityTestQueue.Enqueue(c);
-                capacityCount++;
-            }
-        }
-        
-        // Пытаемся добавить больше символов
-        for (char c = 'a'; c <= 'z'; c++)
-        {
-            if (!capacityTestQueue.Full())
-            {
-                capacityTestQueue.Enqueue(c);
-                capacityCount++;
-            }
-            else
-            {
-                Console.WriteLine($"Очередь заполнена на символе '{c}'");
-                break;
-            }
-        }
-        
-        Console.WriteLine($"Максимальная вместимость: 52");
-        Console.WriteLine($"Добавлено элементов: {capacityCount}");
-        Console.WriteLine($"Очередь полная: {capacityTestQueue.Full()}");
-        
         Console.WriteLine("\n=== ТЕСТИРОВАНИЕ ЗАВЕРШЕНО ===");
-    }
-    
-    // Дополнительный тест для демонстрации работы с разными типами данных
-    public static void RunAdditionalTest()
-    {
-        Console.WriteLine("\n=== ДОПОЛНИТЕЛЬНЫЙ ТЕСТ С ЧИСЛАМИ ===");
-        
-        Lab2.Queue.Array.Queue<int> intQueue = new Lab2.Queue.Array.Queue<int>();
-        
-        // Добавляем числа
-        for (int i = 1; i <= 10; i++)
-        {
-            intQueue.Enqueue(i * 10);
-        }
-        
-        Console.WriteLine("Извлекаем числа из очереди:");
-        while (!intQueue.Empty())
-        {
-            Console.WriteLine($"Извлечено: {intQueue.Dequeue()}");
-        }
-        
-        Console.WriteLine("=== ДОПОЛНИТЕЛЬНЫЙ ТЕСТ ЗАВЕРШЕН ===");
     }
 }

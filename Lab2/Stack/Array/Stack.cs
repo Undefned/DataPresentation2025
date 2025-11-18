@@ -32,13 +32,6 @@ public class Stack<T> : IStack<T>
     /// </summary>
     public void MakeNull()
     {
-        //if (Empty()) return; // Если стек уже пуст, ничего не делаем
-
-        // Очищаем массив, устанавливая всем элементам значение по умолчанию
-        // for (int i = 0; i <= _last; i++)
-        // {
-        //     _array[i] = default!;
-        // }
         _last = -1; // Сбрасываем указатель на пустое состояние
     }
 
@@ -48,11 +41,7 @@ public class Stack<T> : IStack<T>
     /// <returns>Извлеченный элемент</returns>
     public T Pop()
     {
-        //f (Empty())
-           // throw new InvalidOperationException("Stack is empty"); // Защита от пустого стека
-
         T item = _array[_last]; // Сохраняем элемент для возврата
-        // _array[_last] = default!; // Очищаем ячейку в массиве
         _last--; // Уменьшаем указатель вершины
         return item; // Возвращаем сохраненный элемент
     }
@@ -63,7 +52,6 @@ public class Stack<T> : IStack<T>
     /// <param name="x">Элемент для добавления</param>
     public void Push(T x)
     {
-       // if (Full()) return; // Если стек полон, не добавляем
         _array[++_last] = x; // Увеличиваем _last и добавляем элемент
     }
 

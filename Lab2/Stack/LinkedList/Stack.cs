@@ -22,8 +22,6 @@ public class Stack<T> : IStack<T>
 
     public T Pop()
     {
-        if (Empty()) throw new Exception("Empty!");
-
         T item = _head!.Value!;
         _head = _head.Next;
         return item;
@@ -37,8 +35,6 @@ public class Stack<T> : IStack<T>
 
     public T Top()
     {
-        if (Empty()) throw new Exception("Empty");
-        
         return _head!.Value!;
     }
 }

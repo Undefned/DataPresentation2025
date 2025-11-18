@@ -14,7 +14,7 @@ public class Queue<T> : IQueue<T>
 
     public bool Empty()
     {
-        return _list.First() == null;
+        return _list.First() == _list.End();
     }
 
     public void Enqueue(T x)

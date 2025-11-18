@@ -32,7 +32,7 @@ public class LinkedList
         
         // Тест 3: Запрашиваем значение по существующему ключу
         Console.WriteLine("\n3. Поиск существующего ключа:");
-        string address = "";
+        string address;
         bool found = dictionary.Compute("Савин Денис", out address);
         Console.WriteLine($"Ключ 'Савин Денис': найден = {found}, адрес = {address}");
         

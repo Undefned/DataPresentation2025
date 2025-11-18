@@ -7,29 +7,12 @@ public class Queue<T> : IQueue<T>
     private const int _capacity = 52;
     private T[] _array = new T[_capacity];
     private int _first = 0;
-    private int _last = _capacity-1;
-    // public int _count = 0; убрать
+    private int _last = _capacity - 1;
 
     public T Dequeue()
     {
-        // if (Empty())
-        //     throw new InvalidOperationException("Queue is empty");
-
         T item = _array[_first];
-        _array[_first] = default!;
-
-завернуть в отдельный метод{
-            if (_first == _last) // если был последний элемент
-            {
-                _first = 0;
-                _last = -1;
-            }
-            else
-            {
-                _first = (_first + 1) % _capacity; // двигаем голову по кругу
-            }
-            _count--;
-        }
+        _first = Next(_first);
 
         return item;
     }
@@ -37,13 +20,11 @@ public class Queue<T> : IQueue<T>
 
     public bool Empty()
     {
-        return _count == 0;
+        return _first == Next(_last);
     }
 
     public void Enqueue(T x)
     {
-        // if (Full()) return;
-
         if (Empty())
         {
             _first = _last = 0;
@@ -53,29 +34,28 @@ public class Queue<T> : IQueue<T>
             _last = (_last + 1) % _capacity; // двигаем хвост по кругу
         }
         _array[_last] = x;
-        _count++;
     }
 
     public T Front()
     {
-        if (Empty())
-            throw new InvalidOperationException("Queue is empty");
+        // if (Empty())
+        //     throw new InvalidOperationException("Queue is empty");
         return _array[_first];
     }
 
     public bool Full()
     {
-        return _count == _capacity;
+        return Next(Next(_last)) == _first;
     }
 
     public void MakeNull()
     {
-        // for (int i = 0; i < _capacity; i++)
-        // {
-        //     _array[i] = default!;
-        // }
         _first = 0;
         _last = -1;
-        _count = 0;
+    }
+
+    private int Next(int pos)
+    {
+        return (pos + 1) % _capacity;
     }
 }

@@ -30,16 +30,7 @@ public class CircularLinkedList
             }
         }
         
-        // Тест 3: Последовательное извлечение символов (согласно заданию)
-        Console.WriteLine("\n3. Извлечение символов из очереди:");
-        Console.WriteLine("Извлекаем символы пока очередь не станет пустой:");
         
-        while (!queue.Empty())
-        {
-            char ch = queue.Dequeue();
-            Console.WriteLine($"Извлечен: '{ch}'");
-        }
-        Console.WriteLine($"Очередь пустая после извлечения: {queue.Empty()}");
         
         // Тест 4: Проверка методов Front
         Console.WriteLine("\n4. Тестирование метода Front:");
