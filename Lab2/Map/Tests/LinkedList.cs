@@ -1,7 +1,7 @@
-using Lab2.Dictionary.LinkedList;
+using Lab2.Map.LinkedList;
 using System;
 
-namespace Lab2.Dictionary.Tests;
+namespace Lab2.Map.Tests;
 
 public class LinkedList
 {
@@ -10,7 +10,7 @@ public class LinkedList
         Console.WriteLine("=== ТЕСТИРОВАНИЕ СЛОВАРЯ ===");
         
         // Создаем словарь
-        Lab2.Dictionary.LinkedList.Dictionary<string, string> dictionary = new Lab2.Dictionary.LinkedList.Dictionary<string, string>();
+        Lab2.Map.LinkedList.Map<string, string> dictionary = new Lab2.Map.LinkedList.Map<string, string>();
         
         // Тест 1: Добавляем три значения с различными ключами
         Console.WriteLine("\n1. Добавляем три элемента:");

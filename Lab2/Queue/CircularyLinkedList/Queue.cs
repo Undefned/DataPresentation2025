@@ -27,7 +27,7 @@ public class Queue<T> : IQueue<T>
 
     public void Enqueue(T x)
     {
-        if (Empty())
+        if (_tail == null)
         {
             _tail = new Node<T>(x, null);
             _tail.Next = _tail;

@@ -17,21 +17,11 @@ public class List<T> : IList<T, Position>
     static List()
     {
         Nodes = new Node<T>[Size];
-
-        // Инициализация цепочки свободных узлов
-        for (int i = 0; i < Size - 1; i++)
+        for (int i = 0; i < Size; i++)
         {
-            Nodes[i] = new Node<T>
-            {
-                Next = i + 1  // каждый узел указывает на следующий
-            };
+            Nodes[i] = new Node<T>(i, Size);
         }
-
-        // Последний узел указывает на -1 (конец цепочки)
-        Nodes[Size - 1] = new Node<T>
-        {
-            Next = -1
-        };
+        // Node<T>.InitializeNodes(Size);
     }
     
     /// <summary>
@@ -56,46 +46,51 @@ public class List<T> : IList<T, Position>
             Console.WriteLine("Нет свободного места в списке");
             return;
         }
-        
-        // Проверка валидности позиции
-        if (position.Posit != End().Posit && 
-            Previous(position) == new Position(-1) && 
-            position.Posit != _start.Posit)
-        {
-             Console.WriteLine("Неверная позиция для вставки");
-            return;
-        }
 
         int freeIndex = _space;
         int nextFree = Nodes[freeIndex].Next;
+
+        // всегда вставляем перед указанной позицией
+        Nodes[freeIndex].Value = item;
         
-        if (position.Posit == End().Posit) {
+        if (position.Posit == End().Posit) 
+        {
             // Вставка в конец
-            Nodes[freeIndex].Value = item;
             Nodes[freeIndex].Next = -1;
             
-            if (IsEmpty()) {
-                _start.Posit = freeIndex;
-            } else {
-                Nodes[LastPos()].Next = freeIndex;
+            if (IsEmpty()) 
+            {
+                _start.Posit = freeIndex;  // Первый элемент
+            } 
+            else 
+            {
+                // Находим последний элемент и обновляем его Next
+                int lastIndex = LastPos();
+                Nodes[lastIndex].Next = freeIndex;
             }
         }
-        else {
-            // Вставка в начало/середину через GetPrevious()
-            Position previousIndex = Previous(position);
-
-            Nodes[freeIndex].Value = item;
-            Nodes[freeIndex].Next = position.Posit;
-
-            if (previousIndex.Posit == -1) {
-                _start.Posit = freeIndex; // вставка в начало
-            } else {
-                Nodes[previousIndex.Posit].Next = freeIndex; // вставка в середину
+        else 
+        {
+            // Вставка перед существующей позицией
+            Nodes[freeIndex].Next = position.Posit;  // Новый узел указывает на старую позицию
+            
+            int previousIndex = GetPrevious(position.Posit);
+            
+            if (previousIndex == -1) 
+            {
+                // Вставка перед первым элементом = новое начало
+                _start.Posit = freeIndex;
+            } 
+            else 
+            {
+                // Вставка в середину - предыдущий указывает на новый узел
+                Nodes[previousIndex].Next = freeIndex;
             }
         }
         
         _space = nextFree;
     }
+
         
     /// <summary>
     /// Находит позицию первого вхождения элемента в списке
@@ -127,7 +122,7 @@ public class List<T> : IList<T, Position>
         if (position.Posit == End().Posit)
             throw new Exception("Неверная позиция!");
 
-        if (position.Posit != _start.Posit && Previous(position) == new Position(-1))
+        if (position.Posit != _start.Posit && GetPrevious(position.Posit) == -1)
             throw new Exception("Неверная позиция!");
 
         return Nodes[position.Posit].Value!;
@@ -141,7 +136,7 @@ public class List<T> : IList<T, Position>
     public void Delete(Position position)
     {
         if (position.Posit == End().Posit || 
-            (position.Posit != _start.Posit && Previous(position) == new Position(-1)))
+            (position.Posit != _start.Posit && GetPrevious(position.Posit) == -1))
         {
             Console.WriteLine("Позиция не существует в списке");
             return;
@@ -160,10 +155,10 @@ public class List<T> : IList<T, Position>
         }
 
         // Для остальных случаев GetPrevious() уже гарантированно найдет предыдущий
-        Position prev = Previous(position);
+        int prev = GetPrevious(position.Posit);
         
         // Обновляем ссылку предыдущего элемента
-        Nodes[prev.Posit].Next = Nodes[position.Posit].Next;
+        Nodes[prev].Next = Nodes[position.Posit].Next;
 
         // Добавляем освободившуюся ячейку в список свободных
         tmp = _space;
@@ -181,7 +176,7 @@ public class List<T> : IList<T, Position>
         if (position.Posit == End().Posit)
             return new Position(-1);
 
-        if (position.Posit != _start.Posit && Previous(position) == new Position(-1))
+        if (position.Posit != _start.Posit && GetPrevious(position.Posit) == -1)
         {
             Console.WriteLine("Неверная позиция для получения следующего элемента");
             return End();
@@ -240,6 +235,24 @@ public class List<T> : IList<T, Position>
         return -1; // элемент не найден
     }
 
+
+
+    /// <summary>
+    /// Возвращает предыдущую позицию перед указанной позицией
+    /// </summary>
+    /// <param name="position">Текущая позиция</param>
+    /// <returns>Предыдущая позиция или позиция -1 если предыдущего нет</returns>
+    public Position Previous(Position position)
+    {
+        int prev;
+        if (position.Posit < 0 || (prev = GetPrevious(position.Posit)) == -1) 
+            throw new InvalidOperationException("Position not found in list");
+
+        return new Position(prev);
+    }
+
+
+
     /// <summary>
     /// Выводит все элементы списка в консоль
     /// </summary>
@@ -265,6 +278,19 @@ public class List<T> : IList<T, Position>
     }
 
     //=== ВСПОМОГАТЕЛЬНЫЕ ПРИВАТНЫЕ МЕТОДЫ ===
+
+    public int GetPrevious(int index)
+    {
+        int cur = _start.Posit;
+        int prev = -1;
+        while (cur != -1)
+        {
+            if (cur == index) return prev;
+            prev = cur;
+            cur = Nodes[cur].Next;
+        }
+        return -1;
+    }
 
     /// <summary>
     /// Находит индекс последнего элемента в списке
@@ -310,38 +336,4 @@ public class List<T> : IList<T, Position>
     //     }
     //     return -1;
     // }
-
-    /// <summary>
-    /// Возвращает предыдущую позицию перед указанной позицией
-    /// </summary>
-    /// <param name="position">Текущая позиция</param>
-    /// <returns>Предыдущая позиция или позиция -1 если предыдущего нет</returns>
-    public Position Previous(Position position)
-    {
-        if (position.Posit == -1)
-        {
-            throw new InvalidOperationException("Cannot get previous for end position");
-        }
-
-        if (position.Posit == _start.Posit)
-        {
-            // Первый элемент не имеет предыдущего
-            return new Position(-1);
-        }
-
-        int current = _start.Posit;
-        int previous = -1;
-
-        while (current != -1)
-        {
-            if (current == position.Posit)
-            {
-                return new Position(previous);
-            }
-            previous = current;
-            current = Nodes[current].Next;
-        }
-
-        throw new InvalidOperationException("Position not found in list");
-    }
 }

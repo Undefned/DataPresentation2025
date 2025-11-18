@@ -1,8 +1,8 @@
-using Lab2.Dictionary.Interfaces;
+using Lab2.Map.Interfaces;
 
-namespace Lab2.Dictionary.LinkedList;
+namespace Lab2.Map.LinkedList;
 
-public class Dictionary<TKey, TValue> : Interfaces.IDictionary<TKey, TValue>
+public class Map<TKey, TValue> : Interfaces.IMap<TKey, TValue>
 {
     private Node<TKey, TValue>? _head;
     public void Assign(TKey key, TValue value)

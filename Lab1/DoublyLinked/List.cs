@@ -32,30 +32,31 @@ public class List<T> : IList<T, Position<T>>
         {
             if (IsEmpty())
             {
-                // Случай: пустой список
+                // пустой список
                 _head = _tail = newNode;
+                return;
             }
-            else
-            {
-                // Случай: непустой список - добавляем после tail
+            
+                // непустой список - добавляем после tail
                 newNode.Previous = _tail;
                 _tail!.Next = newNode;
                 _tail = newNode;
-            }
+                return;
+            
         }
         // 2. Вставка в начало или середину
         else if (CheckPosition(position))
         {
             Node<T> currentNode = position.Posit!;
 
-            // Случай: вставка перед первым элементом
+            // вставка перед первым элементом
             if (currentNode == _head)
             {
                 newNode.Next = _head;
                 _head!.Previous = newNode;
                 _head = newNode;
             }
-            // Случай: вставка в середину
+            // вставка в середину
             else
             {
                 Node<T> previousNode = currentNode.Previous!;
@@ -114,22 +115,16 @@ public class List<T> : IList<T, Position<T>>
     /// <exception cref="Exception">Если позиция неверная</exception>
     public void Delete(Position<T> position)
     {
-        if (!CheckPosition(position)) 
-        {
-            Console.WriteLine("Неверная позиция для удаления");
-            return;
-        }
-            
         Node<T> nodeToDelete = position.Posit!;
         
-        // Случай: один элемент в списке (head == tail)
+        // один элемент в списке (head == tail)
         if (_head == _tail)
         {
             _head = _tail = null;
             return;
         }
         
-        // Случай: удаляем первый элемент
+        // удаляем первый элемент
         if (nodeToDelete == _head)
         {
             _head = _head!.Next;
@@ -137,7 +132,7 @@ public class List<T> : IList<T, Position<T>>
             return;
         }
         
-        // Случай: удаляем последний элемент  
+        // удаляем последний элемент  
         if (nodeToDelete == _tail)
         {
             _tail = _tail!.Previous;
@@ -145,7 +140,13 @@ public class List<T> : IList<T, Position<T>>
             return;
         }
         
-        // Случай: удаляем из середины
+        if (!CheckPosition(position)) 
+        {
+            Console.WriteLine("Неверная позиция для удаления");
+            return;
+        }
+
+        // удаляем из середины
         nodeToDelete.Previous!.Next = nodeToDelete.Next;
         nodeToDelete.Next!.Previous = nodeToDelete.Previous;
     }
@@ -161,7 +162,7 @@ public class List<T> : IList<T, Position<T>>
             throw new ArgumentException("Invalid position");
         
         // Если следующий элемент null - возвращаем End()
-        return position.Posit!.Next == null ? End() : new Position<T>(position.Posit.Next);
+        return new Position<T>(position.Posit!.Next);
     }
 
     /// <summary>
@@ -183,7 +184,7 @@ public class List<T> : IList<T, Position<T>>
     /// <returns>Позиция первого элемента или End() если список пуст</returns>
     public Position<T> First()
     {
-        return IsEmpty() ? End() : new Position<T>(_head);
+        return new Position<T>(_head);
     }
 
     /// <summary>
@@ -239,18 +240,17 @@ public class List<T> : IList<T, Position<T>>
     /// <exception cref="Exception">Если позиция неверная или это первый элемент</exception>
     public Position<T> Previous(Position<T> position)
     {
-        if (!CheckPosition(position))
-        {
-            Console.WriteLine("Неверная позиция");
-            return End();
-        }
-        
         if (position.Posit == _head)
         {
             Console.WriteLine("Первый элемент не имеет предыдущего");
             return End();
         }
         
+        if (!CheckPosition(position))
+        {
+            Console.WriteLine("Неверная позиция");
+            return End();
+        }
         return new Position<T>(position.Posit!.Previous);
     }
 

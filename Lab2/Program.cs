@@ -11,6 +11,6 @@ public class Program
         Lab2.Queue.Tests.Array.RunTest();
         Lab2.Queue.Tests.ATDList.RunTest();
         Lab2.Queue.Tests.CircularLinkedList.RunTest();
-        Lab2.Dictionary.Tests.LinkedList.RunTest();
+        Lab2.Map.Tests.LinkedList.RunTest();
     }
 }

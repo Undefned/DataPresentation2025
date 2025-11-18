@@ -1,6 +1,6 @@
 # Сгенерированные артефакты сборки
-[Bb]in/
-[Oo]bj/
+bin/
+obj/
 [Dd]ebug/
 [Rr]elease/
 *.dll
@@ -12,6 +12,8 @@
 *.log
 *.vs/
 .vs/
+
+
 
 # Пакеты NuGet
 packages/

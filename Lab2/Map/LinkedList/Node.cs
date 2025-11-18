@@ -1,4 +1,4 @@
-namespace Lab2.Dictionary.LinkedList;
+namespace Lab2.Map.LinkedList;
 
 public class Node<TKey, TValue>
 {

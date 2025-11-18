@@ -7,27 +7,29 @@ public class Queue<T> : IQueue<T>
     private const int _capacity = 52;
     private T[] _array = new T[_capacity];
     private int _first = 0;
-    private int _last = -1;
-    public int _count = 0;
+    private int _last = _capacity-1;
+    // public int _count = 0; убрать
 
     public T Dequeue()
     {
-        if (Empty())
-            throw new InvalidOperationException("Queue is empty");
+        // if (Empty())
+        //     throw new InvalidOperationException("Queue is empty");
 
         T item = _array[_first];
         _array[_first] = default!;
 
-        if (_first == _last) // если был последний элемент
-        {
-            _first = 0;
-            _last = -1;
+завернуть в отдельный метод{
+            if (_first == _last) // если был последний элемент
+            {
+                _first = 0;
+                _last = -1;
+            }
+            else
+            {
+                _first = (_first + 1) % _capacity; // двигаем голову по кругу
+            }
+            _count--;
         }
-        else
-        {
-            _first = (_first + 1) % _capacity; // двигаем голову по кругу
-        }
-        _count--;
 
         return item;
     }
@@ -40,7 +42,7 @@ public class Queue<T> : IQueue<T>
 
     public void Enqueue(T x)
     {
-        if (Full()) return;
+        // if (Full()) return;
 
         if (Empty())
         {
@@ -68,10 +70,10 @@ public class Queue<T> : IQueue<T>
 
     public void MakeNull()
     {
-        for (int i = 0; i < _capacity; i++)
-        {
-            _array[i] = default!;
-        }
+        // for (int i = 0; i < _capacity; i++)
+        // {
+        //     _array[i] = default!;
+        // }
         _first = 0;
         _last = -1;
         _count = 0;

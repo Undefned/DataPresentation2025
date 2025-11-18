@@ -1,6 +1,6 @@
-namespace Lab2.Dictionary.Interfaces;
+namespace Lab2.Map.Interfaces;
 
-public interface IDictionary<TKey, TValue>
+public interface IMap<TKey, TValue>
 {
     void MakeNull();
     void Assign(TKey key, TValue value);
