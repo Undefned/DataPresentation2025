@@ -20,19 +20,19 @@ public class Queue<T> : IQueue<T>
 
     public bool Empty()
     {
-        return _first == Next(_last);
+        return _first == _last;
     }
 
     public void Enqueue(T x)
     {
-        if (Empty())
-        {
-            _first = _last = 0;
-        }
-        else
-        {
+        // if (Empty())
+        // {
+        //     _first = _last = 0;
+        // }
+        // else
+        // {
             _last = (_last + 1) % _capacity; // двигаем хвост по кругу
-        }
+        // }
         _array[_last] = x;
     }
 
@@ -45,7 +45,7 @@ public class Queue<T> : IQueue<T>
 
     public bool Full()
     {
-        return Next(Next(_last)) == _first;
+        return Next(_last) == _first;
     }
 
     public void MakeNull()

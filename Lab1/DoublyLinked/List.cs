@@ -170,11 +170,6 @@ public class List<T> : IList<T, Position<T>>
     /// </summary>
     public void Makenull()
     {
-        if (IsEmpty())
-        {
-            return;
-        }
-
         _head = _tail = null;
     }
 
@@ -282,5 +277,4 @@ public class List<T> : IList<T, Position<T>>
         }
         return false;
     }
-
 }

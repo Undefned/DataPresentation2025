@@ -5,7 +5,7 @@ namespace Lab1.Cursor;
 public class List<T> : IList<T, Position>
 {
     // Статический массив всех узлов - общий для всех экземпляров списка
-    private static readonly Node<T>[] Nodes;
+    private Node<T>[] Nodes;
     // Максимальный размер списка
     private const int Size = 52;
     // Позиция первого элемента списка (-1 если список пуст)
@@ -14,7 +14,7 @@ public class List<T> : IList<T, Position>
     private static int _space = 0;
 
     // Статический конструктор - инициализирует массив узлов один раз при загрузке класса
-    static List()
+    public List()
     {
         Nodes = new Node<T>[Size];
         for (int i = 0; i < Size; i++)
@@ -207,7 +207,7 @@ public class List<T> : IList<T, Position>
     /// <returns>Позиция первого элемента или End() если список пуст</returns>
     public Position First()
     {
-        return IsEmpty() ? End() : new Position(_start.Posit);
+        return new Position(_start.Posit);
     }
 
     /// <summary>

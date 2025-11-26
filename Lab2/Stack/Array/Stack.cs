@@ -61,7 +61,7 @@ public class Stack<T> : IStack<T>
     /// <returns>Верхний элемент стека</returns>
     public T Top()
     {
-        if (Empty()) throw new InvalidOperationException("Stack is empty");
+        // if (Empty()) throw new InvalidOperationException("Stack is empty");
         
         return _array[_last]; // Возвращаем элемент с вершины
     }

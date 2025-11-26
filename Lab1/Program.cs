@@ -15,13 +15,13 @@ public class Program
     {
         SomeList list = new SomeList();
         WriteInList(list);
-        SomeList list2 = new SomeList();
-        WriteInList2(list2);
-        SomeList list3 = new SomeList();
-        WriteInList3(list3);
+        // SomeList list2 = new SomeList();
+        // WriteInList2(list2);
+        // SomeList list3 = new SomeList();
+        // WriteInList3(list3);
         list.PrintList();
-        list2.PrintList();
-        list3.PrintList();
+        // list2.PrintList();
+        // list3.PrintList();
 
         DeleteDuplicates(list);
         list.PrintList();
