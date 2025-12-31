@@ -7,7 +7,7 @@ public class Queue<T> : IQueue<T>
     private const int _capacity = 52;
     private T[] _array = new T[_capacity];
     private int _first = 0;
-    private int _last = _capacity - 1;
+    private int _last = _capacity -1;
 
     public T Dequeue()
     {
@@ -20,7 +20,7 @@ public class Queue<T> : IQueue<T>
 
     public bool Empty()
     {
-        return _first == _last;
+        return _first == Next(_last);
     }
 
     public void Enqueue(T x)
@@ -31,7 +31,7 @@ public class Queue<T> : IQueue<T>
         // }
         // else
         // {
-            _last = (_last + 1) % _capacity; // двигаем хвост по кругу
+        _last = (_last + 1) % _capacity; // двигаем хвост по кругу
         // }
         _array[_last] = x;
     }
@@ -45,13 +45,13 @@ public class Queue<T> : IQueue<T>
 
     public bool Full()
     {
-        return Next(_last) == _first;
+        return Next(Next(_last)) == _first;
     }
 
     public void MakeNull()
     {
+        _last = _capacity-1;
         _first = 0;
-        _last = -1;
     }
 
     private int Next(int pos)

@@ -1,52 +1,134 @@
-using Lab2.Map.LinkedList;
 using System;
+using Lab2.Map.LinkedList;
 
-namespace Lab2.Map.Tests;
-
-public class LinkedList
+namespace Lab2.Map.Tests
 {
-    public static void RunTest()
+    public class LinkedList
     {
-        Console.WriteLine("=== ТЕСТИРОВАНИЕ СЛОВАРЯ ===");
+        public static void RunTest()
+        {
+            Console.WriteLine("=== КОРОТКИЕ ТЕСТЫ Map<TKey, TValue> ===");
+            
+            // Создаем Map с любыми типами (все равно работаем с char[])
+            var map = new Map<int, string>(); // типы не важны
+            
+            Test1_BasicAddSearch(map);
+            Test2_UpdateValue(map);
+            Test3_NotFound(map);
+            Test4_MakeNull(map);
+            Test5_MultipleItems(map);
+            
+            Console.WriteLine("\nВсе тесты пройдены!");
+        }
         
-        // Создаем словарь
-        Lab2.Map.LinkedList.Map<string, string> dictionary = new Lab2.Map.LinkedList.Map<string, string>();
+        private static void Test1_BasicAddSearch(Map<int, string> map)
+        {
+            Console.WriteLine("\n1. Базовое добавление и поиск:");
+            
+            char[] key = "Иван".ToCharArray();
+            char[] value = "Москва, ул. Ленина 10".ToCharArray();
+            
+            map.Assign(key, value);
+            
+            bool found = map.Compute(key, out char[] result);
+            
+            if (!found)
+                throw new Exception("Не найден добавленный ключ");
+                
+            string resultStr = new string(result).TrimEnd('\0');
+            string expected = new string(value).TrimEnd('\0');
+            
+            if (resultStr != expected)
+                throw new Exception($"Ожидалось: '{expected}', получено: '{resultStr}'");
+            
+            Console.WriteLine($"Добавили: {new string(key).TrimEnd('\0')} -> {expected}");
+        }
         
-        // Тест 1: Добавляем три значения с различными ключами
-        Console.WriteLine("\n1. Добавляем три элемента:");
-        dictionary.Assign("Савин Денис", "Санкт-Петербург, пер. Вяземский 5-7");
-        dictionary.Assign("Анна Ковалева", "Москва, ул. Пушкина 15");
-        dictionary.Assign("Андрей Миронов", "Санкт-Петербург, пр. Кронверкский 49");
+        private static void Test2_UpdateValue(Map<int, string> map)
+        {
+            Console.WriteLine("\n2. Обновление значения:");
+            
+            char[] key = "Иван".ToCharArray();
+            char[] newValue = "Санкт-Петербург, Невский пр. 20".ToCharArray();
+            
+            map.Assign(key, newValue);
+            
+            map.Compute(key, out char[] result);
+            string resultStr = new string(result).TrimEnd('\0');
+            string expected = new string(newValue).TrimEnd('\0');
+            
+            if (resultStr != expected)
+                throw new Exception($"Обновление не сработало: '{resultStr}' вместо '{expected}'");
+            
+            Console.WriteLine($" Обновили: {expected}");
+        }
         
-        // Выводим отображение на экран
-        Console.WriteLine("Содержимое словаря:");
-        dictionary.Print();
+        private static void Test3_NotFound(Map<int, string> map)
+        {
+            Console.WriteLine("\n3. Поиск несуществующего ключа:");
+            
+            char[] wrongKey = "Неизвестный".ToCharArray();
+            bool found = map.Compute(wrongKey, out char[] result);
+            
+            if (found || result.Length > 0)
+                throw new Exception("Несуществующий ключ не должен находиться");
+            
+            Console.WriteLine("Несуществующий ключ корректно не найден");
+        }
         
-        // Тест 2: Задаем новое значение по существующему ключу
-        Console.WriteLine("\n2. Обновляем значение для 'Анна Ковалева':");
-        dictionary.Assign("Анна Ковалева", "Москва, ул. Ленина 20");
+        private static void Test4_MakeNull(Map<int, string> map)
+        {
+            Console.WriteLine("\n4. Очистка словаря:");
+            
+            map.MakeNull();
+            
+            char[] key = "Иван".ToCharArray();
+            bool found = map.Compute(key, out char[] _);
+            
+            if (found)
+                throw new Exception("Данные не очистились после MakeNull");
+            
+            Console.WriteLine("Словарь успешно очищен");
+        }
         
-        // Вновь выводим отображение на экран
-        Console.WriteLine("Содержимое после обновления:");
-        dictionary.Print();
-        
-        // Тест 3: Запрашиваем значение по существующему ключу
-        Console.WriteLine("\n3. Поиск существующего ключа:");
-        string address;
-        bool found = dictionary.Compute("Савин Денис", out address);
-        Console.WriteLine($"Ключ 'Савин Денис': найден = {found}, адрес = {address}");
-        
-        // Тест 4: Запрашиваем значение по несуществующему ключу
-        Console.WriteLine("\n4. Поиск несуществующего ключа:");
-        found = dictionary.Compute("Неизвестный", out address);
-        Console.WriteLine($"Ключ 'Неизвестный': найден = {found}, адрес = {address}");
-        
-        // Тест 5: Очищаем словарь
-        Console.WriteLine("\n5. Очищаем словарь:");
-        dictionary.MakeNull();
-        Console.WriteLine("Содержимое после очистки:");
-        dictionary.Print();
-        
-        Console.WriteLine("=== ТЕСТИРОВАНИЕ ЗАВЕРШЕНО ===");
+        private static void Test5_MultipleItems(Map<int, string> map)
+        {
+            Console.WriteLine("\n5. Несколько элементов:");
+            
+            // Добавляем несколько элементов
+            map.Assign("Анна".ToCharArray(), "Москва".ToCharArray());
+            map.Assign("Борис".ToCharArray(), "СПб".ToCharArray());
+            map.Assign("Сергей".ToCharArray(), "Казань".ToCharArray());
+            
+            // Проверяем все
+            bool allFound = true;
+            string[] keys = { "Анна", "Борис", "Сергей" };
+            string[] values = { "Москва", "СПб", "Казань" };
+            
+            for (int i = 0; i < keys.Length; i++)
+            {
+                if (!map.Compute(keys[i].ToCharArray(), out char[] result))
+                {
+                    allFound = false;
+                    break;
+                }
+                
+                string resultStr = new string(result).TrimEnd('\0');
+                if (resultStr != values[i])
+                {
+                    allFound = false;
+                    break;
+                }
+            }
+            
+            if (!allFound)
+                throw new Exception("Не все элементы сохранились");
+            
+            Console.WriteLine("Все 3 элемента добавлены и найдены");
+            
+            // Печатаем содержимое
+            Console.WriteLine("\nСодержимое словаря:");
+            map.Print();
+        }
     }
 }

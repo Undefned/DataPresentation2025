@@ -31,6 +31,7 @@ public class ATDList
         }
 
         // Тест 4: Проверка методов Front
+        queue.MakeNull();
         Console.WriteLine("\n4. Тестирование метода Front:");
         queue.Enqueue('A');
         queue.Enqueue('B');
